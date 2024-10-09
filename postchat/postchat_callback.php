@@ -1,6 +1,6 @@
 <?php
 
-!defined('EMLOG_ROOT') && exit('access deined!');
+!defined('EMLOG_ROOT') && exit('access denied!');
 
 // 当插件被激活时执行的函数
 function plugin_active_postchat() {
@@ -19,7 +19,8 @@ function plugin_active_postchat() {
         'frameWidth'      => '375px',
         'frameHeight'     => '600px',
         'defaultInput'    => true,
-        'showInviteLink'  => true
+        'showInviteLink'  => true,
+        'beginningText'   => '这篇文章介绍了'
     );
 
     // 循环设置每个默认配置项，确保它们被存入
@@ -39,9 +40,22 @@ function plugin_inactive_postchat() {
 function plugin_rm_postchat() {
     // 删除所有相关的配置项
     $keys = array(
-        'key', 'enableSummary', 'enableAI', 'postSelector', 'title',
-        'summaryStyle', 'backgroundColor', 'bottom', 'left', 'fill',
-        'width', 'frameWidth', 'frameHeight', 'defaultInput', 'showInviteLink'
+        'key',
+        'enableSummary',
+        'enableAI',
+        'postSelector',
+        'title',
+        'summaryStyle',
+        'backgroundColor',
+        'bottom',
+        'left',
+        'fill',
+        'width',
+        'frameWidth',
+        'frameHeight',
+        'defaultInput',
+        'showInviteLink',
+        'beginningText'
     );
 
     foreach ($keys as $key) {

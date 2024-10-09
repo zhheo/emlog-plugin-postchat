@@ -1,6 +1,6 @@
 <?php
 
-!defined('EMLOG_ROOT') && exit('access deined!');
+!defined('EMLOG_ROOT') && exit('access denied!');
 
 function plugin_setting_view() {
     // 获取 Storage 实例
@@ -23,7 +23,8 @@ function plugin_setting_view() {
             'frameWidth'      => $_POST['postchat_frameWidth'],
             'frameHeight'     => $_POST['postchat_frameHeight'],
             'defaultInput'    => isset($_POST['postchat_defaultInput']) ? true : false,
-            'showInviteLink'  => isset($_POST['postchat_showInviteLink']) ? true : false
+            'showInviteLink'  => isset($_POST['postchat_showInviteLink']) ? true : false,
+            'beginningText'   => $_POST['postchat_beginningText'] // 确保键名正确
         ), 'array');
     }
 
@@ -46,6 +47,7 @@ function plugin_setting_view() {
     $frameHeight = isset($config['frameHeight']) ? $config['frameHeight'] : '600px';
     $defaultInput = isset($config['defaultInput']) ? $config['defaultInput'] : true;
     $showInviteLink = isset($config['showInviteLink']) ? $config['showInviteLink'] : true;
+    $beginningText = isset($config['beginningText']) ? $config['beginningText'] : '这篇文章介绍了'; // 设置默认值
 
     // 显示配置页面
     ?>
@@ -76,6 +78,11 @@ function plugin_setting_view() {
                 <label>摘要样式CSS:</label>
                 <input type="text" name="postchat_summaryStyle" value="<?php echo htmlspecialchars((string)$summaryStyle); ?>">
                 <small>自定义摘要的CSS样式。</small>
+            </div>
+            <div>
+                <label>自定义摘要开头文本:</label>
+                <input type="text" name="postchat_beginningText" value="<?php echo htmlspecialchars((string)$beginningText); ?>">
+                <small>默认为“这篇文章介绍了”，你可以自定义开头语。</small>
             </div>
             
             <h3>聊天助手配置</h3>
