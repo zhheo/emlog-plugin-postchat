@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: PostChat
-Version: 1.1
+Version: 1.2
 Plugin URL: https://ai.tianli0.top/
 Description: 在页面中插入postchat智能摘要与对话按钮
 Author: 张洪Heo
@@ -31,6 +31,7 @@ function postchat_add_scripts() {
     $defaultInput = isset($config['defaultInput']) ? $config['defaultInput'] : true;
     $showInviteLink = isset($config['showInviteLink']) ? $config['showInviteLink'] : true;
     $beginningText = isset($config['beginningText']) ? $config['beginningText'] : '这篇文章介绍了'; // 新添加的配置项
+    $enableAI = isset($config['enableAI']) ? $config['enableAI'] : true;
 
     // 动态生成 JavaScript 配置
     echo '<link rel="stylesheet" href="https://ai.tianli0.top/static/public/postChatUser_summary.min.css">
@@ -49,6 +50,7 @@ function postchat_add_scripts() {
       defaultInput: ' . ($defaultInput ? 'true' : 'false') . ',
       showInviteLink: ' . ($showInviteLink ? 'true' : 'false') . ',
       beginningText: "' . addslashes(htmlspecialchars($beginningText, ENT_QUOTES, 'UTF-8')) . '",
+      addButton: ' . ($enableAI ? 'true' : 'false') . ',
       systemType: "emlog"
     };
     </script>
