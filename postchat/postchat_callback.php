@@ -11,6 +11,11 @@ function plugin_active_postchat() {
         'postSelector'    => 'postchat_content',
         'title'           => '文章摘要',
         'summaryStyle'    => 'https://ai.tianli0.top/static/public/postChatUser_summary.min.css',
+        'summaryTheme'    => 'default',
+        'postURL'         => '*',
+        'blacklist'       => '',
+        'wordLimit'       => '1000',
+        'typingAnimate'   => true,
         'backgroundColor' => '#3e86f6',
         'bottom'          => '16px',
         'left'            => '16px',
@@ -20,7 +25,11 @@ function plugin_active_postchat() {
         'frameHeight'     => '600px',
         'defaultInput'    => true,
         'showInviteLink'  => true,
-        'beginningText'   => '这篇文章介绍了'
+        'beginningText'   => '这篇文章介绍了',
+        'upLoadWeb'       => true,
+        'userTitle'       => 'PostChat',
+        'userDesc'        => '如果你对网站的内容有任何疑问，可以来问我哦～',
+        'addButton'       => true
     );
 
     // 循环设置每个默认配置项，确保它们被存入
@@ -46,6 +55,11 @@ function plugin_rm_postchat() {
         'postSelector',
         'title',
         'summaryStyle',
+        'summaryTheme',
+        'postURL',
+        'blacklist',
+        'wordLimit',
+        'typingAnimate',
         'backgroundColor',
         'bottom',
         'left',
@@ -55,7 +69,11 @@ function plugin_rm_postchat() {
         'frameHeight',
         'defaultInput',
         'showInviteLink',
-        'beginningText'
+        'beginningText',
+        'upLoadWeb',
+        'userTitle',
+        'userDesc',
+        'addButton'
     );
 
     foreach ($keys as $key) {
