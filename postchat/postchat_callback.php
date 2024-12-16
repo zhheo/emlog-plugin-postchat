@@ -29,7 +29,11 @@ function plugin_active_postchat() {
         'upLoadWeb'       => true,
         'userTitle'       => 'PostChat',
         'userDesc'        => '如果你对网站的内容有任何疑问，可以来问我哦～',
-        'addButton'       => true
+        'addButton'       => true,
+        'userMode'        => 'magic',
+        'userIcon'        => 'https://ai.tianli0.top/static/img/PostChat.webp',
+        'defaultChatQuestions' => array(),
+        'defaultSearchQuestions' => array()
     );
 
     // 循环设置每个默认配置项，确保它们被存入
@@ -73,7 +77,11 @@ function plugin_rm_postchat() {
         'upLoadWeb',
         'userTitle',
         'userDesc',
-        'addButton'
+        'addButton',
+        'userMode',
+        'userIcon',
+        'defaultChatQuestions',
+        'defaultSearchQuestions'
     );
 
     foreach ($keys as $key) {

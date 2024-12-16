@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: PostChat
-Version: 1.3
+Version: 2.0.0
 Plugin URL: https://ai.tianli0.top/
 Description: 在页面中插入postchat智能摘要与对话按钮
 Author: 张洪Heo
@@ -41,6 +41,10 @@ function postchat_add_scripts() {
     $userTitle = isset($config['userTitle']) ? $config['userTitle'] : 'PostChat';
     $userDesc = isset($config['userDesc']) ? $config['userDesc'] : '如果你对网站的内容有任何疑问，可以来问我哦～';
     $addButton = isset($config['addButton']) ? $config['addButton'] : true;
+    $userMode = isset($config['userMode']) ? $config['userMode'] : 'magic';
+    $userIcon = isset($config['userIcon']) ? $config['userIcon'] : 'https://ai.tianli0.top/static/img/PostChat.webp';
+    $defaultChatQuestions = isset($config['defaultChatQuestions']) ? $config['defaultChatQuestions'] : array();
+    $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
 
     // 动态生成 JavaScript 配置
     echo '<link rel="stylesheet" href="https://ai.tianli0.top/static/public/postChatUser_summary.min.css">
@@ -68,6 +72,10 @@ function postchat_add_scripts() {
       upLoadWeb: ' . ($upLoadWeb ? 'true' : 'false') . ',
       userTitle: "' . htmlspecialchars($userTitle, ENT_QUOTES, 'UTF-8') . '",
       userDesc: "' . htmlspecialchars($userDesc, ENT_QUOTES, 'UTF-8') . '",
+      userMode: "' . htmlspecialchars($userMode, ENT_QUOTES, 'UTF-8') . '",
+      userIcon: "' . htmlspecialchars($userIcon, ENT_QUOTES, 'UTF-8') . '",
+      defaultChatQuestions: ' . json_encode($defaultChatQuestions) . ',
+      defaultSearchQuestions: ' . json_encode($defaultSearchQuestions) . ',
       systemType: "emlog"
     };
     </script>

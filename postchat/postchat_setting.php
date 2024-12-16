@@ -33,7 +33,11 @@ function plugin_setting_view() {
             'upLoadWeb'       => isset($_POST['postchat_upLoadWeb']) ? true : false,
             'userTitle'       => $_POST['postchat_userTitle'],
             'userDesc'        => $_POST['postchat_userDesc'],
-            'addButton'       => isset($_POST['postchat_addButton']) ? true : false
+            'addButton'       => isset($_POST['postchat_addButton']) ? true : false,
+            'userMode'        => $_POST['postchat_userMode'],
+            'userIcon'        => $_POST['postchat_userIcon'],
+            'defaultChatQuestions'  => explode("\n", trim($_POST['postchat_defaultChatQuestions'])),
+            'defaultSearchQuestions'=> explode("\n", trim($_POST['postchat_defaultSearchQuestions']))
         ), 'array');
     }
 
@@ -66,6 +70,10 @@ function plugin_setting_view() {
     $userTitle = isset($config['userTitle']) ? $config['userTitle'] : 'PostChat';
     $userDesc = isset($config['userDesc']) ? $config['userDesc'] : '如果你对网站的内容有任何疑问，可以来问我哦～';
     $addButton = isset($config['addButton']) ? $config['addButton'] : true;
+    $userMode = isset($config['userMode']) ? $config['userMode'] : 'magic';
+    $userIcon = isset($config['userIcon']) ? $config['userIcon'] : 'https://ai.tianli0.top/static/img/PostChat.webp';
+    $defaultChatQuestions = isset($config['defaultChatQuestions']) ? $config['defaultChatQuestions'] : array();
+    $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
 
     // 显示配置页面
     ?>
@@ -134,6 +142,14 @@ function plugin_setting_view() {
                 <input type="checkbox" name="postchat_enableAI" <?php echo $enableAI ? 'checked' : ''; ?>>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label>显示模式:</label>
+                <select name="postchat_userMode">
+                    <option value="magic" <?php echo $userMode === 'magic' ? 'selected' : ''; ?>>Magic</option>
+                    <option value="iframe" <?php echo $userMode === 'iframe' ? 'selected' : ''; ?>>Iframe</option>
+                </select>
+                <small>选择PostChat的显示模式。</small>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>按钮背景颜色:</label>
                 <input type="text" name="postchat_backgroundColor" value="<?php echo htmlspecialchars((string)$backgroundColor); ?>">
             </div>
@@ -156,10 +172,12 @@ function plugin_setting_view() {
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>聊天框架宽度:</label>
                 <input type="text" name="postchat_frameWidth" value="<?php echo htmlspecialchars((string)$frameWidth); ?>">
+                <small>聊天框架宽度，默认375px。（仅在iframe模式下有效）</small>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>聊天框架高度:</label>
                 <input type="text" name="postchat_frameHeight" value="<?php echo htmlspecialchars((string)$frameHeight); ?>">
+                <small>聊天框架高度，默认600px。（仅在iframe模式下有效）</small>
             </div>
             <div style="display: flex; gap: 10px;">
                 <label>默认输入:</label>
@@ -188,6 +206,21 @@ function plugin_setting_view() {
                 <label>是否显示按钮:</label>
                 <input type="checkbox" name="postchat_addButton" <?php echo $addButton ? 'checked' : ''; ?>>
                 <small>勾选此项时按钮会被显示。</small>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label>用户图标:</label>
+                <input type="text" name="postchat_userIcon" value="<?php echo htmlspecialchars((string)$userIcon); ?>">
+                <small>Magic模式下显示的用户图标URL。（仅在Magic模式下有效）</small>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label>默认聊天问题:</label>
+                <textarea name="postchat_defaultChatQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultChatQuestions)); ?></textarea>
+                <small>每行一个问题，作为默认的聊天问题选项。（仅在Magic模式下有效）  </small>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label>默认搜索问题:</label>
+                <textarea name="postchat_defaultSearchQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultSearchQuestions)); ?></textarea>
+                <small>每行一个问题，作为默认的搜索问题选项。（仅在Magic模式下有效）</small>
             </div>
             
             <input type="submit" value="保存配置" style="align-self: flex-start;">
