@@ -83,169 +83,300 @@ function plugin_setting_view() {
 
     // 显示配置页面
     ?>
-    <div class="plugin-settings" style="display: flex; flex-direction: column; gap: 20px; max-width: 600px; margin: 0 auto;">
-        <form action="" method="post" style="display: flex; flex-direction: column; gap: 20px;">
-            <h3>账户配置</h3>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>项目KEY:</label>
-                <input type="text" name="postchat_key" value="<?php echo htmlspecialchars((string)$key); ?>">
-                <small>使用PostChat的用户请前往 https://ai.zhheo.com/ 获取 KEY。</small>
+    <div class="plugin-settings" style="max-width: 800px; margin: 20px auto; padding: 20px;">
+        <style>
+            .plugin-settings {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            }
+            .settings-section {
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 24px;
+                margin-bottom: 24px;
+            }
+            .settings-section h3 {
+                color: #1a1a1a;
+                font-size: 1.25rem;
+                margin: 0 0 20px 0;
+                padding-bottom: 12px;
+                border-bottom: 2px solid #f0f0f0;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+                font-weight: 500;
+            }
+            .form-group input[type="text"],
+            .form-group input[type="number"],
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+                transition: border-color 0.2s;
+            }
+            .form-group input[type="text"]:focus,
+            .form-group input[type="number"]:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: #3e86f6;
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(62,134,246,0.1);
+            }
+            .form-group small {
+                display: block;
+                margin-top: 6px;
+                color: #666;
+                font-size: 12px;
+            }
+            .checkbox-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .checkbox-group input[type="checkbox"] {
+                width: 16px;
+                height: 16px;
+            }
+            .submit-btn {
+                background: #3e86f6;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            .submit-btn:hover {
+                background: #2d6fd9;
+            }
+            .form-row {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+            }
+        </style>
+
+        <form action="" method="post">
+            <div class="settings-section">
+                <h3>账户配置</h3>
+                <div class="form-group">
+                    <label>项目KEY</label>
+                    <input type="text" name="postchat_key" value="<?php echo htmlspecialchars((string)$key); ?>">
+                    <small>使用PostChat的用户请前往 <a href="https://ai.zhheo.com/" target="_blank">https://ai.zhheo.com/</a> 获取 KEY。</small>
+                </div>
+                <div class="form-group">
+                    <label>API Secret</label>
+                    <input type="text" name="postchat_apiSecret" value="<?php echo htmlspecialchars((string)$apiSecret); ?>">
+                    <small>请前往 <a href="https://ai.zhheo.com/console/settings" target="_blank">https://ai.zhheo.com/console/settings</a> 获取 API Secret。</small>
+                </div>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>API Secret:</label>
-                <input type="text" name="postchat_apiSecret" value="<?php echo htmlspecialchars((string)$apiSecret); ?>">
-                <small>请前往 <a href="https://ai.zhheo.com/console/settings" target="_blank">https://ai.zhheo.com/console/settings</a> 获取 API Secret。</small>
+
+            <div class="settings-section">
+                <h3>文章摘要配置</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_enableSummary" id="enableSummary" <?php echo $enableSummary ? 'checked' : ''; ?>>
+                            <label for="enableSummary">开启文章摘要</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_enablePrivateSummary" id="enablePrivateSummary" <?php echo $enablePrivateSummary ? 'checked' : ''; ?>>
+                            <label for="enablePrivateSummary">开启私有化摘要</label>
+                        </div>
+                        <small>开启私有化摘要后，摘要将写入到本地数据库，提升访问速度。开启此项需要填写API Secret。</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>文章选择器</label>
+                        <input type="text" name="postchat_postSelector" value="<?php echo htmlspecialchars((string)$postSelector); ?>">
+                        <small>用于选择文章内容的CSS选择器。如果使用的不是默认主题需要进行更改。</small>
+                    </div>
+                    <div class="form-group">
+                        <label>摘要标题</label>
+                        <input type="text" name="postchat_title" value="<?php echo htmlspecialchars((string)$title); ?>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>摘要样式CSS</label>
+                        <input type="text" name="postchat_summaryStyle" value="<?php echo htmlspecialchars((string)$summaryStyle); ?>">
+                        <small>自定义摘要的CSS样式。</small>
+                    </div>
+                    <div class="form-group">
+                        <label>摘要主题配置</label>
+                        <input type="text" name="postchat_summaryTheme" value="<?php echo htmlspecialchars((string)$summaryTheme); ?>">
+                        <small>切换文章摘要主题，详情请见 <a href="https://postchat.zhheo.com/theme.html" target="_blank">主题文档</a>。</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>文章路由</label>
+                        <input type="text" name="postchat_postURL" value="<?php echo htmlspecialchars((string)$postURL); ?>">
+                        <small>在符合url条件的网页执行文章摘要功能。</small>
+                    </div>
+                    <div class="form-group">
+                        <label>黑名单</label>
+                        <input type="text" name="postchat_blacklist" value="<?php echo htmlspecialchars((string)$blacklist); ?>">
+                        <small>填写相关的json地址，帮助文档：<a href="https://ai.zhheo.com/docs/variant.html#tianligpt-blacklist" target="_blank">黑名单参数</a>。</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>字数限制</label>
+                        <input type="text" name="postchat_wordLimit" value="<?php echo htmlspecialchars((string)$wordLimit); ?>">
+                        <small>可以设置提交的字数限制，默认为1000字。</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_typingAnimate" id="typingAnimate" <?php echo $typingAnimate ? 'checked' : ''; ?>>
+                            <label for="typingAnimate">打字动画效果</label>
+                        </div>
+                        <small>模拟流处理的打字效果。</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>自定义摘要开头文本</label>
+                    <input type="text" name="postchat_beginningText" value="<?php echo htmlspecialchars((string)$beginningText); ?>">
+                    <small>默认为"这篇文章介绍了"，你可以自定义开头语。</small>
+                </div>
             </div>
-            
-            <h3>文章摘要配置</h3>
-            <div style="display: flex; gap: 10px;">
-                <label>开启文章摘要:</label>
-                <input type="checkbox" name="postchat_enableSummary" <?php echo $enableSummary ? 'checked' : ''; ?>>
+
+            <div class="settings-section">
+                <h3>聊天助手配置</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_enableAI" id="enableAI" <?php echo $enableAI ? 'checked' : ''; ?>>
+                            <label for="enableAI">开启PostChat智能对话</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>显示模式</label>
+                        <select name="postchat_userMode">
+                            <option value="magic" <?php echo $userMode === 'magic' ? 'selected' : ''; ?>>Magic</option>
+                            <option value="iframe" <?php echo $userMode === 'iframe' ? 'selected' : ''; ?>>Iframe</option>
+                        </select>
+                        <small>选择PostChat的显示模式。</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>按钮背景颜色</label>
+                        <input type="text" name="postchat_backgroundColor" value="<?php echo htmlspecialchars((string)$backgroundColor); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>按钮图标填充颜色</label>
+                        <input type="text" name="postchat_fill" value="<?php echo htmlspecialchars((string)$fill); ?>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>按钮距离底部边距</label>
+                        <input type="text" name="postchat_bottom" value="<?php echo htmlspecialchars((string)$bottom); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>按钮距离左侧边距</label>
+                        <input type="text" name="postchat_left" value="<?php echo htmlspecialchars((string)$left); ?>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>按钮宽度</label>
+                        <input type="text" name="postchat_width" value="<?php echo htmlspecialchars((string)$width); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>聊天框架宽度</label>
+                        <input type="text" name="postchat_frameWidth" value="<?php echo htmlspecialchars((string)$frameWidth); ?>">
+                        <small>聊天框架宽度，默认375px。（仅在iframe模式下有效）</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>聊天框架高度</label>
+                        <input type="text" name="postchat_frameHeight" value="<?php echo htmlspecialchars((string)$frameHeight); ?>">
+                        <small>聊天框架高度，默认600px。（仅在iframe模式下有效）</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_defaultInput" id="defaultInput" <?php echo $defaultInput ? 'checked' : ''; ?>>
+                            <label for="defaultInput">默认输入</label>
+                        </div>
+                        <small>用户点击按钮后自动输入本页面标题。</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_showInviteLink" id="showInviteLink" <?php echo $showInviteLink ? 'checked' : ''; ?>>
+                            <label for="showInviteLink">显示邀请链接</label>
+                        </div>
+                        <small>勾选此项后，用户点击聊天助手会跳转到有邀请性质的洪墨AI界面，购买会获得返利，具体规则请到 <a href="https://ai.zhheo.com/console/invitation" target="_blank">前往</a> 查看。</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_upLoadWeb" id="upLoadWeb" <?php echo $upLoadWeb ? 'checked' : ''; ?>>
+                            <label for="upLoadWeb">上传网站内容</label>
+                        </div>
+                        <small>勾选此项时，你的网站内容将会被自动提交到PostChat。</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>界面标题</label>
+                        <input type="text" name="postchat_userTitle" value="<?php echo htmlspecialchars((string)$userTitle); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>聊天界面描述</label>
+                        <input type="text" name="postchat_userDesc" value="<?php echo htmlspecialchars((string)$userDesc); ?>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="postchat_addButton" id="addButton" <?php echo $addButton ? 'checked' : ''; ?>>
+                            <label for="addButton">是否显示按钮</label>
+                        </div>
+                        <small>勾选此项时按钮会被显示。</small>
+                    </div>
+                    <div class="form-group">
+                        <label>用户图标</label>
+                        <input type="text" name="postchat_userIcon" value="<?php echo htmlspecialchars((string)$userIcon); ?>">
+                        <small>Magic模式下显示的用户图标URL。（仅在Magic模式下有效）</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>默认聊天问题</label>
+                    <textarea name="postchat_defaultChatQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultChatQuestions)); ?></textarea>
+                    <small>每行一个问题，作为默认的聊天问题选项。（仅在Magic模式下有效）</small>
+                </div>
+                <div class="form-group">
+                    <label>默认搜索问题</label>
+                    <textarea name="postchat_defaultSearchQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultSearchQuestions)); ?></textarea>
+                    <small>每行一个问题，作为默认的搜索问题选项。（仅在Magic模式下有效）</small>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="postchat_hotWords" id="hotWords" <?php echo $hotWords ? 'checked' : ''; ?>>
+                        <label for="hotWords">开启热词功能</label>
+                    </div>
+                    <small>开启后将在聊天界面显示文章热词。</small>
+                </div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <label>开启私有化摘要:</label>
-                <input type="checkbox" name="postchat_enablePrivateSummary" <?php echo $enablePrivateSummary ? 'checked' : ''; ?>>
-                <small>开启私有化摘要后，摘要将写入到本地数据库，提升访问速度。开启此项需要填写API Secret。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>文章选择器:</label>
-                <input type="text" name="postchat_postSelector" value="<?php echo htmlspecialchars((string)$postSelector); ?>">
-                <small>用于选择文章内容的CSS选择器。如果使用的不是默认主题需要进行更改。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>摘要标题:</label>
-                <input type="text" name="postchat_title" value="<?php echo htmlspecialchars((string)$title); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>摘要样式CSS:</label>
-                <input type="text" name="postchat_summaryStyle" value="<?php echo htmlspecialchars((string)$summaryStyle); ?>">
-                <small>自定义摘要的CSS样式。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>摘要主题配置:</label>
-                <input type="text" name="postchat_summaryTheme" value="<?php echo htmlspecialchars((string)$summaryTheme); ?>">
-                <small>切换文章摘要主题，详情请见 <a href="https://postchat.zhheo.com/theme.html" target="_blank">主题文档</a>。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>文章路由:</label>
-                <input type="text" name="postchat_postURL" value="<?php echo htmlspecialchars((string)$postURL); ?>">
-                <small>在符合url条件的网页执行文章摘要功能。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>黑名单:</label>
-                <input type="text" name="postchat_blacklist" value="<?php echo htmlspecialchars((string)$blacklist); ?>">
-                <small>填写相关的json地址，帮助文档：<a href="https://ai.zhheo.com/docs/variant.html#tianligpt-blacklist" target="_blank">黑名单参数</a>。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>字数限制:</label>
-                <input type="text" name="postchat_wordLimit" value="<?php echo htmlspecialchars((string)$wordLimit); ?>">
-                <small>可以设置提交的字数限制，默认为1000字。</small>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <label>打字动画效果:</label>
-                <input type="checkbox" name="postchat_typingAnimate" <?php echo $typingAnimate ? 'checked' : ''; ?>>
-                <small>模拟流处理的打字效果。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>自定义摘要开头文本:</label>
-                <input type="text" name="postchat_beginningText" value="<?php echo htmlspecialchars((string)$beginningText); ?>">
-                <small>默认为"这篇文章介绍了"，你可以自定义开头语。</small>
-            </div>
-            
-            <h3>聊天助手配置</h3>
-            <div style="display: flex; gap: 10px;">
-                <label>开启PostChat智能对话:</label>
-                <input type="checkbox" name="postchat_enableAI" <?php echo $enableAI ? 'checked' : ''; ?>>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>显示模式:</label>
-                <select name="postchat_userMode">
-                    <option value="magic" <?php echo $userMode === 'magic' ? 'selected' : ''; ?>>Magic</option>
-                    <option value="iframe" <?php echo $userMode === 'iframe' ? 'selected' : ''; ?>>Iframe</option>
-                </select>
-                <small>选择PostChat的显示模式。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>按钮背景颜色:</label>
-                <input type="text" name="postchat_backgroundColor" value="<?php echo htmlspecialchars((string)$backgroundColor); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>按钮图标填充颜色:</label>
-                <input type="text" name="postchat_fill" value="<?php echo htmlspecialchars((string)$fill); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>按钮距离底部边距:</label>
-                <input type="text" name="postchat_bottom" value="<?php echo htmlspecialchars((string)$bottom); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>按钮距离左侧边距:</label>
-                <input type="text" name="postchat_left" value="<?php echo htmlspecialchars((string)$left); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>按钮宽度:</label>
-                <input type="text" name="postchat_width" value="<?php echo htmlspecialchars((string)$width); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>聊天框架宽度:</label>
-                <input type="text" name="postchat_frameWidth" value="<?php echo htmlspecialchars((string)$frameWidth); ?>">
-                <small>聊天框架宽度，默认375px。（仅在iframe模式下有效）</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>聊天框架高度:</label>
-                <input type="text" name="postchat_frameHeight" value="<?php echo htmlspecialchars((string)$frameHeight); ?>">
-                <small>聊天框架高度，默认600px。（仅在iframe模式下有效）</small>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <label>默认输入:</label>
-                <input type="checkbox" name="postchat_defaultInput" <?php echo $defaultInput ? 'checked' : ''; ?>>
-                <small>用户点击按钮后自动输入本页面标题。</small>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <label>显示邀请链接:</label>
-                <input type="checkbox" name="postchat_showInviteLink" <?php echo $showInviteLink ? 'checked' : ''; ?>>
-                <small>勾选此项以显示邀请链接。</small>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <label>上传网站内容:</label>
-                <input type="checkbox" name="postchat_upLoadWeb" <?php echo $upLoadWeb ? 'checked' : ''; ?>>
-                <small>勾选此项时，你的网站内容将会被自动提交到PostChat。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>界面标题:</label>
-                <input type="text" name="postchat_userTitle" value="<?php echo htmlspecialchars((string)$userTitle); ?>">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>聊天界面描述:</label>
-                <input type="text" name="postchat_userDesc" value="<?php echo htmlspecialchars((string)$userDesc); ?>">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <label>是否显示按钮:</label>
-                <input type="checkbox" name="postchat_addButton" <?php echo $addButton ? 'checked' : ''; ?>>
-                <small>勾选此项时按钮会被显示。</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>用户图标:</label>
-                <input type="text" name="postchat_userIcon" value="<?php echo htmlspecialchars((string)$userIcon); ?>">
-                <small>Magic模式下显示的用户图标URL。（仅在Magic模式下有效）</small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>默认聊天问题:</label>
-                <textarea name="postchat_defaultChatQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultChatQuestions)); ?></textarea>
-                <small>每行一个问题，作为默认的聊天问题选项。（仅在Magic模式下有效）  </small>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>默认搜索问题:</label>
-                <textarea name="postchat_defaultSearchQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultSearchQuestions)); ?></textarea>
-                <small>每行一个问题，作为默认的搜索问题选项。（仅在Magic模式下有效）</small>
-            </div>
-            
-            <div style="display: flex; gap: 10px;">
-                <label>开启热词功能:</label>
-                <input type="checkbox" name="postchat_hotWords" <?php echo $hotWords ? 'checked' : ''; ?>>
-                <small>开启后将在聊天界面显示文章热词。</small>
-            </div>
-            
-            <input type="submit" value="保存配置" style="align-self: flex-start;">
+
+            <button type="submit" class="submit-btn">保存配置</button>
         </form>
     </div>
     <?php
