@@ -12,6 +12,7 @@ function plugin_setting_view() {
             'key'             => $_POST['postchat_key'],
             'apiSecret'       => $_POST['postchat_apiSecret'],
             'enableSummary'   => isset($_POST['postchat_enableSummary']) ? true : false,
+            'enablePrivateSummary' => isset($_POST['postchat_enablePrivateSummary']) ? true : false,
             'enableAI'        => isset($_POST['postchat_enableAI']) ? true : false,
             'postSelector'    => $_POST['postchat_postSelector'],
             'title'           => $_POST['postchat_title'],
@@ -50,6 +51,7 @@ function plugin_setting_view() {
     $key = isset($config['key']) ? $config['key'] : '70b649f150276f289d1025508f60c5f58a';
     $apiSecret = isset($config['apiSecret']) ? $config['apiSecret'] : '';
     $enableSummary = isset($config['enableSummary']) ? $config['enableSummary'] : false;
+    $enablePrivateSummary = isset($config['enablePrivateSummary']) ? $config['enablePrivateSummary'] : false;
     $enableAI = isset($config['enableAI']) ? $config['enableAI'] : false;
     $postSelector = isset($config['postSelector']) ? $config['postSelector'] : 'postchat_content';
     $title = isset($config['title']) ? $config['title'] : '文章摘要';
@@ -99,6 +101,11 @@ function plugin_setting_view() {
             <div style="display: flex; gap: 10px;">
                 <label>开启文章摘要:</label>
                 <input type="checkbox" name="postchat_enableSummary" <?php echo $enableSummary ? 'checked' : ''; ?>>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <label>开启私有化摘要:</label>
+                <input type="checkbox" name="postchat_enablePrivateSummary" <?php echo $enablePrivateSummary ? 'checked' : ''; ?>>
+                <small>开启私有化摘要后，摘要将写入到本地数据库，提升访问速度。开启此项需要填写API Secret。</small>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>文章选择器:</label>

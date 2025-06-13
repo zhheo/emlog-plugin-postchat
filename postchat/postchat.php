@@ -11,8 +11,15 @@ Author URL: https://zhheo.com/
 // 防止非法访问
 !defined('EMLOG_ROOT') && exit('access denied!');
 
+// 引入公共函数
+require_once(EMLOG_ROOT . '/content/plugins/postchat/postchat_common.php');
+
+// 引入摘要生成相关函数
+require_once(EMLOG_ROOT . '/content/plugins/postchat/postchat_summary.php');
+
 // 插入 CSS 和 JavaScript 到页面头部
 function postchat_add_scripts() {
+    write_log("开始加载页面脚本");
     // 获取 Storage 实例并读取插件配置信息
     $plugin_storage = Storage::getInstance('PostChat');
     $config = $plugin_storage->getValue('config', array());
@@ -47,6 +54,9 @@ function postchat_add_scripts() {
     $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
     $hotWords = isset($config['hotWords']) ? $config['hotWords'] : true;
 
+    // 从 URL 参数中获取文章 ID
+    $logid = isset($_GET['post']) ? intval($_GET['post']) : 0;
+
     // 动态生成 JavaScript 配置
     echo '<link rel="stylesheet" href="https://ai.zhheo.com/static/public/postChatUser_summary.min.css">
     <script>
@@ -58,6 +68,7 @@ function postchat_add_scripts() {
     let tianliGPT_wordLimit = "' . htmlspecialchars($wordLimit, ENT_QUOTES, 'UTF-8') . '";
     let tianliGPT_typingAnimate = ' . ($typingAnimate ? 'true' : 'false') . ';
     let tianliGPT_theme = "' . htmlspecialchars($summaryTheme, ENT_QUOTES, 'UTF-8') . '";
+    let tianliGPT_summary = "' . ($logid > 0 ? get_summary($logid) : '') . '";
     var postChatConfig = {
       backgroundColor: "' . htmlspecialchars($backgroundColor, ENT_QUOTES, 'UTF-8') . '",
       bottom: "' . htmlspecialchars($bottom, ENT_QUOTES, 'UTF-8') . '",
@@ -86,6 +97,7 @@ function postchat_add_scripts() {
 
 // 为文章内容添加 <postchat_content> 标签
 function postchat_add_tag($logData, &$result) {
+    write_log("处理文章内容，文章ID: " . (isset($logData['gid']) ? $logData['gid'] : 'unknown'));
     // 获取文章内容
     $content = $logData['log_content'];
 
@@ -99,4 +111,5 @@ addAction('index_head', 'postchat_add_scripts');
 // 在文章内容输出前添加 <postchat_content> 标签
 addAction('article_content_echo', 'postchat_add_tag');
 
+write_log("PostChat插件初始化完成");
 ?>

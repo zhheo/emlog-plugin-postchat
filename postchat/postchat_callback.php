@@ -42,6 +42,9 @@ function plugin_active_postchat() {
             Option::set('postchat_' . $key, $value);
         }
     }
+
+    // 调用初始化函数创建数据表
+    callback_init();
 }
 
 // 当插件被停用时执行的函数
@@ -93,5 +96,37 @@ function plugin_rm_postchat() {
 addAction('plugin_active_postchat', 'plugin_active_postchat');
 addAction('plugin_inactive_postchat', 'plugin_inactive_postchat');
 addAction('plugin_rm_postchat', 'plugin_rm_postchat');
+
+// 插件开启时调用，创建数据表
+function callback_init() {
+    $db = Database::getInstance();
+    $charset = 'utf8mb4';
+    $prefix = DB_PREFIX;
+    
+    // 创建摘要表
+    $sql = "CREATE TABLE IF NOT EXISTS `{$prefix}postchat_summary` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `log_id` int(11) NOT NULL COMMENT '文章ID',
+        `summary` text NOT NULL COMMENT '摘要内容',
+        `generate_time` datetime NOT NULL COMMENT '生成时间',
+        `is_vector` varchar(20) NOT NULL DEFAULT 'generating' COMMENT '向量状态',
+        PRIMARY KEY (`id`),
+        KEY `log_id` (`log_id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET={$charset};";
+    
+    $db->query($sql);
+}
+
+// 插件删除时调用，清理数据表
+function callback_rm() {
+    $db = Database::getInstance();
+    $prefix = DB_PREFIX;
+    $db->query("DROP TABLE IF EXISTS `{$prefix}postchat_summary`");
+}
+
+// 插件更新时调用
+function callback_up() {
+    // 暂无更新操作
+}
 
 ?>
