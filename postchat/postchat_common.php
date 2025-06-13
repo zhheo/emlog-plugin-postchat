@@ -4,10 +4,12 @@
 
 // 日志记录函数
 function write_log($message) {
-    $log_file = '/www/wwwroot/emlog.zhheo.com/postchat.log';
-    $timestamp = date('Y-m-d H:i:s');
-    $log_message = "[{$timestamp}] {$message}\n";
-    file_put_contents($log_file, $log_message, FILE_APPEND);
+    // 临时禁用日志记录
+    return;
+    // $log_file = '/www/wwwroot/emlog.zhheo.com/postchat.log';
+    // $timestamp = date('Y-m-d H:i:s');
+    // $log_message = "[{$timestamp}] {$message}\n";
+    // file_put_contents($log_file, $log_message, FILE_APPEND);
 }
 
 // 检查并创建摘要表
