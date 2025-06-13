@@ -2,7 +2,7 @@
     <a href="https://ai.tianli0.top/" target="_blank" rel="noopener noreferrer">
         <img src="https://github.com/user-attachments/assets/63202383-660f-421a-aacd-ea01d675f968" alt="icon"/>
     </a>
-    <h1 align="center">PostChat</h1>
+    <h1 align="center">洪墨AI（PostChat）</h1>
     <span>PostChat的emlog插件，也支持文章摘要用户使用</span>
 </div>
 
