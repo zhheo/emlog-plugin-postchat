@@ -10,6 +10,7 @@ function plugin_setting_view() {
     if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
         $db->setValue('config', array(
             'key'             => $_POST['postchat_key'],
+            'apiSecret'       => $_POST['postchat_apiSecret'],
             'enableSummary'   => isset($_POST['postchat_enableSummary']) ? true : false,
             'enableAI'        => isset($_POST['postchat_enableAI']) ? true : false,
             'postSelector'    => $_POST['postchat_postSelector'],
@@ -47,6 +48,7 @@ function plugin_setting_view() {
 
     // 如果某个配置项不存在，则使用默认值
     $key = isset($config['key']) ? $config['key'] : '70b649f150276f289d1025508f60c5f58a';
+    $apiSecret = isset($config['apiSecret']) ? $config['apiSecret'] : '';
     $enableSummary = isset($config['enableSummary']) ? $config['enableSummary'] : false;
     $enableAI = isset($config['enableAI']) ? $config['enableAI'] : false;
     $postSelector = isset($config['postSelector']) ? $config['postSelector'] : 'postchat_content';
@@ -83,9 +85,14 @@ function plugin_setting_view() {
         <form action="" method="post" style="display: flex; flex-direction: column; gap: 20px;">
             <h3>账户配置</h3>
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <label>账户KEY:</label>
+                <label>项目KEY:</label>
                 <input type="text" name="postchat_key" value="<?php echo htmlspecialchars((string)$key); ?>">
                 <small>使用PostChat的用户请前往 https://ai.zhheo.com/ 获取 KEY。</small>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label>API Secret:</label>
+                <input type="text" name="postchat_apiSecret" value="<?php echo htmlspecialchars((string)$apiSecret); ?>">
+                <small>请前往 <a href="https://ai.zhheo.com/console/settings" target="_blank">https://ai.zhheo.com/console/settings</a> 获取 API Secret。</small>
             </div>
             
             <h3>文章摘要配置</h3>
