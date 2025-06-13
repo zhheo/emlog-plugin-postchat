@@ -10,7 +10,7 @@ function plugin_active_postchat() {
         'enableAI'        => false,
         'postSelector'    => 'postchat_content',
         'title'           => '文章摘要',
-        'summaryStyle'    => 'https://ai.tianli0.top/static/public/postChatUser_summary.min.css',
+        'summaryStyle'    => 'https://ai.zhheo.com/static/public/postChatUser_summary.min.css',
         'summaryTheme'    => 'default',
         'postURL'         => '*',
         'blacklist'       => '',
@@ -31,7 +31,7 @@ function plugin_active_postchat() {
         'userDesc'        => '如果你对网站的内容有任何疑问，可以来问我哦～',
         'addButton'       => true,
         'userMode'        => 'magic',
-        'userIcon'        => 'https://ai.tianli0.top/static/img/PostChat.webp',
+        'userIcon'        => 'https://ai.zhheo.com/static/img/PostChat.webp',
         'defaultChatQuestions' => array(),
         'defaultSearchQuestions' => array()
     );

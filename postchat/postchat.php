@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: PostChat
-Version: 2.0.0
-Plugin URL: https://ai.tianli0.top/
+Version: 3.0.0
+Plugin URL: https://ai.zhheo.com/
 Description: 在页面中插入postchat智能摘要与对话按钮
 Author: 张洪Heo
 Author URL: https://zhheo.com/
@@ -42,12 +42,13 @@ function postchat_add_scripts() {
     $userDesc = isset($config['userDesc']) ? $config['userDesc'] : '如果你对网站的内容有任何疑问，可以来问我哦～';
     $addButton = isset($config['addButton']) ? $config['addButton'] : true;
     $userMode = isset($config['userMode']) ? $config['userMode'] : 'magic';
-    $userIcon = isset($config['userIcon']) ? $config['userIcon'] : 'https://ai.tianli0.top/static/img/PostChat.webp';
+    $userIcon = isset($config['userIcon']) ? $config['userIcon'] : 'https://ai.zhheo.com/static/img/PostChat.webp';
     $defaultChatQuestions = isset($config['defaultChatQuestions']) ? $config['defaultChatQuestions'] : array();
     $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
+    $hotWords = isset($config['hotWords']) ? $config['hotWords'] : true;
 
     // 动态生成 JavaScript 配置
-    echo '<link rel="stylesheet" href="https://ai.tianli0.top/static/public/postChatUser_summary.min.css">
+    echo '<link rel="stylesheet" href="https://ai.zhheo.com/static/public/postChatUser_summary.min.css">
     <script>
     let tianliGPT_key = "' . htmlspecialchars($key, ENT_QUOTES, 'UTF-8') . '";
     let tianliGPT_postSelector = "' . htmlspecialchars($postSelector, ENT_QUOTES, 'UTF-8') . '";
@@ -76,10 +77,11 @@ function postchat_add_scripts() {
       userIcon: "' . htmlspecialchars($userIcon, ENT_QUOTES, 'UTF-8') . '",
       defaultChatQuestions: ' . json_encode($defaultChatQuestions) . ',
       defaultSearchQuestions: ' . json_encode($defaultSearchQuestions) . ',
+      hotWords: ' . ($hotWords ? 'true' : 'false') . ',
       systemType: "emlog"
     };
     </script>
-    <script data-postChat_key="' . htmlspecialchars($key, ENT_QUOTES, 'UTF-8') . '" src="https://ai.tianli0.top/static/public/postChatUser_summary.min.js"></script>' . "\n";
+    <script data-postChat_key="' . htmlspecialchars($key, ENT_QUOTES, 'UTF-8') . '" src="https://ai.zhheo.com/static/public/postChatUser_summary.min.js"></script>' . "\n";
 }
 
 // 为文章内容添加 <postchat_content> 标签

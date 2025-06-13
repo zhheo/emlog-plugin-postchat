@@ -37,7 +37,8 @@ function plugin_setting_view() {
             'userMode'        => $_POST['postchat_userMode'],
             'userIcon'        => $_POST['postchat_userIcon'],
             'defaultChatQuestions'  => explode("\n", trim($_POST['postchat_defaultChatQuestions'])),
-            'defaultSearchQuestions'=> explode("\n", trim($_POST['postchat_defaultSearchQuestions']))
+            'defaultSearchQuestions'=> explode("\n", trim($_POST['postchat_defaultSearchQuestions'])),
+            'hotWords'             => isset($_POST['postchat_hotWords']) ? true : false
         ), 'array');
     }
 
@@ -50,7 +51,7 @@ function plugin_setting_view() {
     $enableAI = isset($config['enableAI']) ? $config['enableAI'] : false;
     $postSelector = isset($config['postSelector']) ? $config['postSelector'] : 'postchat_content';
     $title = isset($config['title']) ? $config['title'] : '文章摘要';
-    $summaryStyle = isset($config['summaryStyle']) ? $config['summaryStyle'] : 'https://ai.tianli0.top/static/public/postChatUser_summary.min.css';
+    $summaryStyle = isset($config['summaryStyle']) ? $config['summaryStyle'] : 'https://ai.zhheo.com/static/public/postChatUser_summary.min.css';
     $summaryTheme = isset($config['summaryTheme']) ? $config['summaryTheme'] : 'default';
     $postURL = isset($config['postURL']) ? $config['postURL'] : '*';
     $blacklist = isset($config['blacklist']) ? $config['blacklist'] : '';
@@ -71,9 +72,10 @@ function plugin_setting_view() {
     $userDesc = isset($config['userDesc']) ? $config['userDesc'] : '如果你对网站的内容有任何疑问，可以来问我哦～';
     $addButton = isset($config['addButton']) ? $config['addButton'] : true;
     $userMode = isset($config['userMode']) ? $config['userMode'] : 'magic';
-    $userIcon = isset($config['userIcon']) ? $config['userIcon'] : 'https://ai.tianli0.top/static/img/PostChat.webp';
+    $userIcon = isset($config['userIcon']) ? $config['userIcon'] : 'https://ai.zhheo.com/static/img/PostChat.webp';
     $defaultChatQuestions = isset($config['defaultChatQuestions']) ? $config['defaultChatQuestions'] : array();
     $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
+    $hotWords = isset($config['hotWords']) ? $config['hotWords'] : true;
 
     // 显示配置页面
     ?>
@@ -83,7 +85,7 @@ function plugin_setting_view() {
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>账户KEY:</label>
                 <input type="text" name="postchat_key" value="<?php echo htmlspecialchars((string)$key); ?>">
-                <small>使用PostChat的用户请前往 https://ai.tianli0.top/ 获取 KEY。</small>
+                <small>使用PostChat的用户请前往 https://ai.zhheo.com/ 获取 KEY。</small>
             </div>
             
             <h3>文章摘要配置</h3>
@@ -118,7 +120,7 @@ function plugin_setting_view() {
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>黑名单:</label>
                 <input type="text" name="postchat_blacklist" value="<?php echo htmlspecialchars((string)$blacklist); ?>">
-                <small>填写相关的json地址，帮助文档：<a href="https://postsummary.zhheo.com/parameters.html#tianligpt-blacklist" target="_blank">黑名单参数</a>。</small>
+                <small>填写相关的json地址，帮助文档：<a href="https://ai.zhheo.com/docs/variant.html#tianligpt-blacklist" target="_blank">黑名单参数</a>。</small>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>字数限制:</label>
@@ -133,7 +135,7 @@ function plugin_setting_view() {
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label>自定义摘要开头文本:</label>
                 <input type="text" name="postchat_beginningText" value="<?php echo htmlspecialchars((string)$beginningText); ?>">
-                <small>默认为“这篇文章介绍了”，你可以自定义开头语。</small>
+                <small>默认为"这篇文章介绍了"，你可以自定义开头语。</small>
             </div>
             
             <h3>聊天助手配置</h3>
@@ -221,6 +223,12 @@ function plugin_setting_view() {
                 <label>默认搜索问题:</label>
                 <textarea name="postchat_defaultSearchQuestions" rows="4"><?php echo htmlspecialchars(implode("\n", (array)$defaultSearchQuestions)); ?></textarea>
                 <small>每行一个问题，作为默认的搜索问题选项。（仅在Magic模式下有效）</small>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <label>开启热词功能:</label>
+                <input type="checkbox" name="postchat_hotWords" <?php echo $hotWords ? 'checked' : ''; ?>>
+                <small>开启后将在聊天界面显示文章热词。</small>
             </div>
             
             <input type="submit" value="保存配置" style="align-self: flex-start;">
