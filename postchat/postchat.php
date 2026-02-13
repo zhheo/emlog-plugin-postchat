@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: PostChat
-Version: 3.0.0
+Version: 3.1.0
 Plugin URL: https://ai.zhheo.com/
 Description: 在页面中插入postchat智能摘要与对话按钮
 Author: 张洪Heo
@@ -53,6 +53,8 @@ function postchat_add_scripts() {
     $defaultChatQuestions = isset($config['defaultChatQuestions']) ? $config['defaultChatQuestions'] : array();
     $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
     $hotWords = isset($config['hotWords']) ? $config['hotWords'] : true;
+    $recommend = isset($config['recommend']) ? min(10, max(0, intval($config['recommend']))) : 0;
+    $tianliGPT_podcast = isset($config['tianliGPT_podcast']) ? $config['tianliGPT_podcast'] : false;
 
     // 从 URL 参数中获取文章 ID
     $logid = isset($_GET['post']) ? intval($_GET['post']) : 0;
@@ -69,6 +71,7 @@ function postchat_add_scripts() {
     let tianliGPT_typingAnimate = ' . ($typingAnimate ? 'true' : 'false') . ';
     let tianliGPT_theme = "' . htmlspecialchars($summaryTheme, ENT_QUOTES, 'UTF-8') . '";
     let tianliGPT_summary = "' . ($logid > 0 ? get_summary($logid) : '') . '";
+    let tianliGPT_podcast = ' . ($tianliGPT_podcast ? 'true' : 'false') . ';
     var postChatConfig = {
       backgroundColor: "' . htmlspecialchars($backgroundColor, ENT_QUOTES, 'UTF-8') . '",
       bottom: "' . htmlspecialchars($bottom, ENT_QUOTES, 'UTF-8') . '",
@@ -89,6 +92,7 @@ function postchat_add_scripts() {
       defaultChatQuestions: ' . json_encode($defaultChatQuestions) . ',
       defaultSearchQuestions: ' . json_encode($defaultSearchQuestions) . ',
       hotWords: ' . ($hotWords ? 'true' : 'false') . ',
+      recommend: ' . (int)$recommend . ',
       systemType: "emlog"
     };
     </script>

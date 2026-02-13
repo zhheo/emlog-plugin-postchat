@@ -40,7 +40,9 @@ function plugin_setting_view() {
             'userIcon'        => $_POST['postchat_userIcon'],
             'defaultChatQuestions'  => explode("\n", trim($_POST['postchat_defaultChatQuestions'])),
             'defaultSearchQuestions'=> explode("\n", trim($_POST['postchat_defaultSearchQuestions'])),
-            'hotWords'             => isset($_POST['postchat_hotWords']) ? true : false
+            'hotWords'             => isset($_POST['postchat_hotWords']) ? true : false,
+            'recommend'            => min(10, max(0, intval($_POST['postchat_recommend'] ?? 0))),
+            'tianliGPT_podcast'    => isset($_POST['postchat_tianliGPT_podcast']) ? true : false
         ), 'array');
     }
 
@@ -80,6 +82,8 @@ function plugin_setting_view() {
     $defaultChatQuestions = isset($config['defaultChatQuestions']) ? $config['defaultChatQuestions'] : array();
     $defaultSearchQuestions = isset($config['defaultSearchQuestions']) ? $config['defaultSearchQuestions'] : array();
     $hotWords = isset($config['hotWords']) ? $config['hotWords'] : true;
+    $recommend = isset($config['recommend']) ? min(10, max(0, intval($config['recommend']))) : 0;
+    $tianliGPT_podcast = isset($config['tianliGPT_podcast']) ? $config['tianliGPT_podcast'] : false;
 
     // 显示配置页面
     ?>
@@ -252,6 +256,13 @@ function plugin_setting_view() {
                     <input type="text" name="postchat_beginningText" value="<?php echo htmlspecialchars((string)$beginningText); ?>">
                     <small>默认为"这篇文章介绍了"，你可以自定义开头语。</small>
                 </div>
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="postchat_tianliGPT_podcast" id="tianliGPT_podcast" <?php echo $tianliGPT_podcast ? 'checked' : ''; ?>>
+                        <label for="tianliGPT_podcast">启用 AI 播客 (tianliGPT_podcast)</label>
+                    </div>
+                    <small>开启后启用 AI 播客功能，默认关闭。</small>
+                </div>
             </div>
 
             <div class="settings-section">
@@ -373,6 +384,11 @@ function plugin_setting_view() {
                         <label for="hotWords">开启热词功能</label>
                     </div>
                     <small>开启后将在聊天界面显示文章热词。</small>
+                </div>
+                <div class="form-group">
+                    <label>文章底部推荐数量 (recommend)</label>
+                    <input type="number" name="postchat_recommend" value="<?php echo (int)$recommend; ?>" min="0" max="10" step="1">
+                    <small>在文章底部显示推荐文章的数量。0 为关闭，最大 10。设为 0 则不显示推荐文章。</small>
                 </div>
             </div>
 
